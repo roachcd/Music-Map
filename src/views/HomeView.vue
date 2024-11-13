@@ -10,8 +10,62 @@ import HelloWorld from '@/components/HelloWorld.vue'
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-var weightData = require("@/assets/WeightData/United States.json");
-const weightDataJson = JSON.parse(JSON.stringify(weightData));
+
+var weightData = require("@/assets/WeightData/United States of America.json");
+var weightDataJson = JSON.parse(JSON.stringify(weightData));
+
+function getWeightData(country){
+  try{
+    weightData = require("@/assets/WeightData/"+country+".json");
+    weightDataJson = JSON.parse(JSON.stringify(weightData));
+  }
+  catch{
+    console.log("No data for " + country);
+  }
+}
+
+var countryMap = null;
+var info = L.control();
+
+info.onAdd = function (map) {
+    this.update();
+};
+
+info.update = function (props) {
+  console.log(props.name);
+  getWeightData(props.name);
+  countryMap.resetStyle();
+}
+
+function highlightFeature(e) {
+    var layer = e.target;
+    info.update(layer.feature.properties);
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    layer.bringToFront();
+}
+
+function resetHighlight(e) {
+    countryMap.resetStyle(e.target);
+} 
+
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+}
 
 function getColor(country) {
 
@@ -19,7 +73,7 @@ function getColor(country) {
 
     const result = weightDataJson.filter(item => item.name === country);
 
-    console.log(result);
+    //console.log(result);
 
     if(result.length != 0){
       const d = result[0].weight;
@@ -67,8 +121,10 @@ export default {
       }).addTo(map);
 
       var countryData = require("@/assets/globe.geo.json")
-      var countryMap = new L.geoJson(countryData, {style: style});
+      countryMap = new L.geoJson(countryData, {style: style, onEachFeature: onEachFeature});
       countryMap.addTo(map);
+
+      info.addTo(map);
       
     },
   },

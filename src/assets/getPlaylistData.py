@@ -63,7 +63,7 @@ playlist_ids=[
     ["Thailand", "37i9dQZEVXbMnz8KIWsvf9"],
     ["Turkey", "37i9dQZEVXbIVYVBNw9D5K"],
     ["United Kingdom", "37i9dQZEVXbLnolsZ8PSNw"],
-    ["United States", "37i9dQZEVXbLRQDuF5jeBp"],
+    ["United States of America", "37i9dQZEVXbLRQDuF5jeBp"],
     ["Uruguay", "37i9dQZEVXbMJJi3wgRbAy"],
 ]
 
