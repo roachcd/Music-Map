@@ -1,12 +1,7 @@
 <template>
   <div class="home">
     <div id="map"></div>
-    <div class="page">
-        <div class="data">
-            <h1 id="countryName">Global</h1>
-            <h3>Most Similar</h3>
-        </div>
-    </div>
+    <CountryInfo :country-name="countryName"></CountryInfo>
   </div>
 </template>
 
@@ -16,6 +11,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { latLng } from 'leaflet';
+import CountryInfo from '@/components/CountryInfo.vue';
 
 
 var weightData = require("@/assets/WeightData/Global.json");
@@ -41,6 +37,11 @@ info.onAdd = function (map) {
 export default {
   name: 'HomeView',
   components: {
+    CountryInfo
+  },
+  data(){
+      return {
+      };
   },
   methods:{
     setupLeafletMap: function () {
@@ -157,35 +158,4 @@ export default {
   #map{
     background-color: #aad3df;
   }
-  .page{
-        background-color: rgb(184, 184, 184);
-        position: fixed;
-        width: 200px;
-        height: 40vh;
-        margin-top: 1%;
-        display: block;
-        top: 0px;
-        z-index: 1000;
-        pointer-events: none;
-        border-radius: 10px;
-        margin-left: 20px;
-        opacity: .9;
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
-    }
-    .data{
-        opacity: 1;
-        color: black;
-        padding-left: 15px;
-    }
-    .data h1{
-        filter: drop-shadow(0 1mm 3mm rgb(90, 90, 90));
-        margin-left: -15px;
-        height: 40px;
-        overflow-y: hidden;
-        margin-bottom: -10px;
-    }
-    .data h3{
-      float:left;
-    }
 </style>
