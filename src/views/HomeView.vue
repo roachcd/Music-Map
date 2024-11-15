@@ -4,6 +4,7 @@
     <div class="page">
         <div class="data">
             <h1 id="countryName"></h1>
+            <h3>Most Similar</h3>
         </div>
     </div>
   </div>
@@ -17,7 +18,7 @@ import L from "leaflet";
 import { latLng } from 'leaflet';
 
 
-var weightData = require("@/assets/WeightData/United States of America.json");
+var weightData = require("@/assets/WeightData/Global.json");
 var weightDataJson = JSON.parse(JSON.stringify(weightData));
 
 function getWeightData(country){
@@ -34,11 +35,21 @@ var countryMap = null;
 var info = L.control();
 
 info.onAdd = function (map) {
-    this.update();
+    resetHighlight();
 };
 
+function dataExists(country){
+  const result = weightDataJson.filter(item => item.name === country);
+  if(result.length != 0){
+    return true;
+  }
+  return false;
+}
+
 info.update = function (props) {
-  document.getElementById("countryName").textContent=props;
+  if(dataExists(props)){
+    document.getElementById("countryName").textContent=props;
+  }
   getWeightData(props);
   countryMap.resetStyle();
 }
@@ -70,7 +81,7 @@ function onEachFeature(feature, layer) {
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
-        click: zoomToFeature
+        click: zoomToFeature,
     });
 }
 
@@ -118,7 +129,7 @@ export default {
     },
   methods:{
     setupLeafletMap: function () {
-      const map = L.map('map', {zoomControl: false}).setView([51.505, -0.09], 13);
+      const map = L.map('map', {zoomControl: false}).setView([0, 0], 2);
 
       const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 5,
@@ -129,8 +140,7 @@ export default {
       countryMap = new L.geoJson(countryData, {style: style, onEachFeature: this.hover});
       countryMap.addTo(map);
 
-      info.addTo(map);
-      
+      info.addTo(map);      
     },
     hover(feature, layer){
       onEachFeature(feature, layer)
@@ -138,7 +148,7 @@ export default {
   },
   mounted() {
    this.setupLeafletMap();
- },
+  },
 }
 </script>
 
@@ -176,8 +186,16 @@ export default {
     .data{
         opacity: 1;
         color: black;
+        padding-left: 15px;
     }
     .data h1{
         filter: drop-shadow(0 1mm 3mm rgb(90, 90, 90));
+        margin-left: -15px;
+        height: 40px;
+        overflow-y: hidden;
+        margin-bottom: -10px;
+    }
+    .data h3{
+      float:left;
     }
 </style>
