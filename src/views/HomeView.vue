@@ -103,6 +103,7 @@ export default {
     },
     resetHighlight(e) {
         this.updateInfo("Global");
+        document.getElementById("countrySimilar").textContent="";
         //countryMap.resetStyle(e.target);
     },
     highlightFeature(e) {
@@ -128,6 +129,10 @@ export default {
     updateInfo(props) {
       if(this.dataExists(props)){
         document.getElementById("countryName").textContent=props;
+        var globeData = require("@/assets/WeightData/Global.json");
+        var globeJson = JSON.parse(JSON.stringify(globeData));
+        const result = globeJson.filter(item => item.name === props);
+        document.getElementById("countrySimilar").textContent=Math.floor(result[0].weight) + "% similar to globe";
       }
       getWeightData(props);
       countryMap.resetStyle();
