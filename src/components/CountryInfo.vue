@@ -2,7 +2,7 @@
     <div class="page">
         <div class="data">
             <h1 id="countryName">Global</h1>
-            <h3 id="countrySimilar">55% Similar</h3>
+            <h3 id="countrySimilar"></h3>
         </div>
     </div>
 </template>
