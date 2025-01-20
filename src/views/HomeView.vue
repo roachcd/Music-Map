@@ -95,11 +95,11 @@ export default {
         layer.on({
             mouseover: this.highlightFeature,
             mouseout: this.resetHighlight,
-            click: this.zoomToFeature,
+            click: this.clickFeature,
         });
     },
-    zoomToFeature(e) {
-        map.fitBounds(e.target.getBounds());
+    clickFeature(e) {
+      this.highlightFeature(e);
     },
     resetHighlight(e) {
         this.updateInfo("Global");
